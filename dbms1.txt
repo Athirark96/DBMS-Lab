@@ -1,0 +1,84 @@
+create table student(sid varchar(15) primary key,sname varchar(20),class varchar(15),adyear number(5),dob data);
+
+alter table student add stid varchar(10);
+
+create table staff(stid varchar(10) primary key,stname varchar(15),department varchar(20),designation varchar(20),salary float(10),age number(5),sid varchar(15) references student(sid));  //table created with primary key and foreign key 
+
+create table asset(tid varchar(10) primary key,tname varchar(20),tcount number(5),tprice float(5),stid varchar(10) references staff(stid));
+
+create table result(rid varchar(10) primary key,rdate date,grade varchar(10),mark float(5),sid varchar(15) references student(sid));
+
+desc student; //table print
+desc staff;
+desc result;
+ desc asset;
+
+ alter table student add constraint cname foreign key(stid) references staff(stid);
+
+ alter table asset  add damaged number(4); //add column
+
+alter table asset drop column damaged; //drop column
+
+
+
+create table students(roll_no  varchar(5) primary key ,s_name varchar(10),s_address varchar(20));
+ create table Marksheet(roll_no varchar(5) references students(roll_no),sub1 float(5),sub2 float(5),sub3 float(5));
+ insert into students values('1','Rahul','Pattom');
+ insert into students values('2','Sachin','Ambalam mukku');
+ insert into students values('3','Saurav','Nalanchira');
+
+ insert into marksheet values('1','78','89','94');
+insert into marksheet values('2','54','65','77');
+ insert into marksheet values('3','23','78','46');
+
+alter table marksheet drop column sub2;
+
+alter table marksheet add grade varchar(4);
+
+
+
+create table bus(bus_no varchar(5) primary key,source varchar(10),destination varchar(10),coach_type varchar(10));
+
+ create table reservation(pnr_no varchar(5) primary key,journey_date date,no_of_seat number(4),address varchar(20),contact_no number(10),bus_no varchar(5) references bus(bus_no),seat_no varchar(4));
+
+ create table passenger (pnr_no varchar(5) primary key,ticket_no varchar(5) references ticket(ticket_no),name varchar(15),age number(3),sex varchar(5),contact_no number(10));
+
+create table cancellation(pnr_no varchar(5) primary key,journey_date date,seat_no varchar(5),contact_no number(10));
+
+ insert into  bus values ('200','Trivandrum','Chennai','AC Sleeper');
+
+insert into bus values('201','Chennai','Bangalore','AC Semi');
+
+ insert into reservation values('P201','10-Dec-2020',4,'Ulloor Trivandrum',9747083093,'200','A1');
+
+ insert into reservation values('P202','10-Oct-2019',5,'Manacuad Trivandrum',9446492591,'201','C2');
+
+ insert into ticket values('T101','10-Oct-2019',43,'F','Trivandrum','Chennai','10:20 pm','201');
+
+ insert into ticket values('T102','10-Nov-2019',43,'M','Trivandrum','Mangalore','05:30 am','200');
+
+insert into ticket values('T103','11-Nov-2019',35,'M','Trivandrum','Mangalore','05:30 am','200');
+
+ insert into ticket values('T104','11-Nov-2019',19,'F','Trivandrum','Chennai','06:30 am','201');
+
+ insert into passenger values('P201','T101','Adharsh',19,'M',9747083093);
+
+ insert into passenger values('P202','T102','Shah',29,'M',9747099093);
+
+ insert into passenger values('P203','T103','Tiny',32,'F',9114457890);
+
+ select ticket_no,name from passenger;
+select name from passenger where sex='M';
+
+ select name from passenger where age between 20 and 40;
+
+ select * from passenger order by name desc;
+select * from cancellation where journey_date='10-oct-2019';
+
+
+
+
+insert into cancellation values ('P201','10-Oct-2019','A1','1234567890');
+insert into cancellation values ('P202','31-Oct-2019','A1','123127890');
+insert into cancellation values ('P203','01-Nov-2019','A1','098765345');
+select * from cancellation,passenger where passenger.pnr_no = cancellation.pnr_no and journey_date='10-oct-2019';
